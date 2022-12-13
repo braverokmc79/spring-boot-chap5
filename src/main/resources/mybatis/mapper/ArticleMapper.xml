@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chap5.ex2.model.dao.mapper.ArticleMapper">
+
+
+	<select id="listArticle" resultType="com.chap5.ex2.model.vo.ArticleVO">
+	  SELECT  *, m.name  FROM article	a INNER JOIN `member` m  ON a.writer=m.id  
+	</select>
+
+
+	<insert id="writeArticle" parameterType="com.chap5.ex2.model.vo.ArticleVO" 
+	useGeneratedKeys="true" keyProperty="articleNo"  >
+		INSERT INTO article (writer, title, regdate,  read_cnt)		
+		 VALUES(#{writer}, #{title},  now(), 0)
+	</insert>
+
+	<insert id="writeArticleContent">
+		INSERT INTO article_content (article_no, content) VALUES(#{articleNo},  #{content})		
+	</insert>
+
+	
+	<select id="getArticle" resultType="com.chap5.ex2.model.vo.ArticleVO">		
+		SELECT a.*, ac.content , m.name FROM article a 	
+			INNER JOIN article_content ac ON a.article_no = ac.article_no	
+			INNER JOIN `member` m  ON a.writer = m.id	
+		WHERE a.article_no =#{aid}
+	</select>
+
+
+	<update id="updateCntArticle">
+		UPDATE article
+			SET  read_cnt=read_cnt+1
+		WHERE article_no=#{articleNo} 
+	</update>
+	
+	<update id="updateArticle">
+	UPDATE article
+		SET  title=#{title}, moddate=now()
+	WHERE article_no=#{articleNo} AND writer=#{writer}	
+	</update>
+	
+	<update id="updateArticleContent">
+	 UPDATE article_content SET  content=#{content} WHERE article_no=#{articleNo}
+	</update>
+	
+	
+	
+	<delete id="deleteArticle">
+		DELETE FROM article WHERE article_no=#{articleNo} AND writer=#{writer}	
+	</delete>
+
+
+</mapper>

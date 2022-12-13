@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chap5.ex2.model.dao.mapper.MemberMapper">
+
+
+	<select id="getMember" resultType="com.chap5.ex2.model.vo.MemberVO">
+	 	SELECT * FROM member WHERE email =#{email} AND password =#{password}
+	</select>
+	
+	<select id="getAllMember" resultType="com.chap5.ex2.model.vo.MemberVO">
+	 	SELECT * FROM member
+	</select>
+	
+	<insert id="addMember">
+	INSERT INTO `member` (email, password, name, regdate)
+		VALUES(#{email}, #{password}, #{name}, now())	
+	</insert>
+	
+	
+	<delete id="deleteMember">
+		DELETE FROM member  WHERE id =#{id}
+	</delete>
+
+	
+</mapper>
